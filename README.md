@@ -138,4 +138,4 @@ If the calculated size isnât aligned, zero bytes are inserted.
 
 ## Summary
 
-FCV is a compact, curve-based animation format for controlling motion, camera, and player systems using Hermite spline keyframes. It provides tight control over relative and absolute transforms, supports data compression through varied encoding formats, and is highly extensible.
+FCV is a compact and rather rigid animation format but behind this make its a very versatile, optimized format reducing complex animations as small as 5kb if pushed far enough. 
