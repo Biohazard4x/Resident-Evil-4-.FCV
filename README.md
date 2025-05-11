@@ -4,6 +4,7 @@
 **File Type**: Binary  
 **Purpose**: Defines animation for bones, camera, and player movement using keyframes and Hermite curves. No raw 3D data is stored.
 **Ports**: PS2/Ubisoft/UHD
+**Notes**: This is based for the above ports. UHD file size is big endian. The GameCube port is entirely big endian.
 
 ---
 
