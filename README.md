@@ -137,7 +137,3 @@ If the calculated size isn't aligned, zero bytes are inserted.
 - The game will always read the file size field but does not validate its value.
 
 ---
-
-## Summary
-
-FCV is a compact and rather rigid animation format but behind this make its a very versatile, optimized format reducing complex animations as small as 5kb if pushed far enough. 
