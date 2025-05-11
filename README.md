@@ -115,7 +115,7 @@ Each axis (X, Y, Z) of a joint gets its own keyframe block. The pointer table in
 | 0x02   | uint16   | Keyframe Start Frame |
 | 0x04   | byte[]   | Keyframe Curve Data (Hermite splines or direct baked data) |
 
-- The encoding format is determined by the jointâs Data Type (see table above).
+- The encoding format is determined by the joints Data Type (see table above).
 - Even if an axis is static or unused, it **must** be present with start/end bind pose values.
 
 ---
@@ -123,7 +123,7 @@ Each axis (X, Y, Z) of a joint gets its own keyframe block. The pointer table in
 ## 6. Padding
 
 To maintain alignment, the header (up to pointer table) must be padded to a **16-byte boundary**.  
-If the calculated size isnât aligned, zero bytes are inserted.  
+If the calculated size isn't aligned, zero bytes are inserted.  
 **This padding is always expected and must be respected**âomitting it will break file parsing.
 
 ---
