@@ -1,8 +1,9 @@
 
 # FCV (Frames, Curves, Values) Animation File Format Specification  
-**Game**: Resident Evil 4 (2005)  
+**Game**: Resident Evil 4 (2005) 
 **File Type**: Binary  
 **Purpose**: Defines animation for bones, camera, and player movement using keyframes and Hermite curves. No raw 3D data is stored.
+**Ports**: PS2/Ubisoft/UHD
 
 ---
 
