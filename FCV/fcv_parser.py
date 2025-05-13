@@ -115,7 +115,7 @@ class FCVParser:
             for i in range(self.node_count):
                 line = f"  [{i:02}] Type: 0x{self.node_types[i]:02X} | Data: 0x{self.data_types[i]:02X} | ID: {self.node_ids[i]}"
                 if i in self.camera_roles:
-                    line += f" ↳ Camera Role: {self.camera_roles[i]}"
+                    line += f" | Camera Role: {self.camera_roles[i]}"
                 self.log_print(line)
 
             self.log_print(f"\n--- Pointer Table ---")
