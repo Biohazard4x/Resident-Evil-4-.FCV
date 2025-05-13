@@ -122,7 +122,7 @@ Each axis (X, Y, Z) of a joint gets its own keyframe block. The pointer table in
 
 ## 6. Padding
 
-To maintain alignment, the header (up to pointer table) must be padded to a **16-byte boundary**.  
+To maintain alignment, the header (up to pointer table) must be padded to a **32bit boundary**.  
 If the calculated size isn't aligned, zero bytes are inserted.  
 **This padding is always expected and must be present** and omitting it will break file parsing.
 
