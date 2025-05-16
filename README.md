@@ -28,7 +28,7 @@
 | 0x04   | uint8[]  | Data Types (1 byte per node, upper and lower nibbles, see below) |
 | 0x05   | uint8[]  | Joint IDs (1 byte per node) |
 | 0x06   | uint32   | File Size (always read, can be zero) |
-| 0x0A   | padding  | Optional padding to 16-byte boundary |
+| 0x0A   | padding  | Optional padding to 32bit boundary |
 | 0x0B   | uint32[] | Pointers to keyframe data blocks (1 per joint) |
 
 **Note**: Node Types and Data Types form a packed structure and correspond 1:1 with Joint IDs and Pointers.
