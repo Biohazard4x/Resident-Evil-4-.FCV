@@ -49,8 +49,9 @@ These define the function or transformation type of each node.
 | 0x20    | Translation (Absolute)| Possibly world translation |
 | 0x40    | Scale (Absolute)      | Possibly world scale |
 | 0x80    | Flip Bone             | For left/right handed bone flipping |
+| 0xA0    | Unknown               | Unkown How and what it is used for  |
 
-These flags can be combined as bitmasks.
+According to PS2 Decomp these are not Flags
 
 ---
 
@@ -70,21 +71,27 @@ Each Data Type byte contains two nibbles:
 | 0x40   | int16, Float, Float          | 2:4:4          | 10 bytes |
 | 0x50   | int16, int16, int16          | 2:2:2          | 6 bytes |
 | 0x60   | int16, int8, int8            | 2:1:1          | 4 bytes |
+| 0x80   | int8, Float, Float           | 1:4:4          | 9 bytes |
 | 0x90   | int8, int16, int16           | 1:2:2          | 5 bytes |
 | 0xA0   | int8, int8, int8             | 1:1:1          | 3 bytes |
+| 0xF0   | Float, Float,---             | 4:4:-          | 8 bytes |
+
+0xF0 Does not contain a 3rd tangent value of any kind, 2nd tangent interpeted to be a shared tangent.
 
 ### **Lower Nibble (IK Pull Direction / Camera Assignment)**
 
 | Value | Meaning |
 |-------|---------|
-| 0x00  | IK Pull: Player's Left |
-| 0x01  | IK Pull: Player's Right |
-| 0x02  | IK Pull: Player's Right |
-| 0x03  | IK Pull: Player's Right |
-| 0x04  | IK Pull: Player's Front |
-| 0x05  | IK Pull: Player's Back |
+| 0x00  | IK Pole Target - Y = 1.0  |
+| 0x01  | IK Pole Target - Y = -1.0 |
+| 0x02  | IK Pole Target - X = 1.0  |
+| 0x03  | IK Pole Target - X = -1.0  |
+| 0x04  | IK Pole Target - Z = 1.0  |
+| 0x05  | IK Pole Target - Z = -1.0  |
 | 0x06  | **Camera Type**: This node is camera-related |
-| 0x07+ | Reserved / Unknown |
+| 0x07  | **Camera Type**: This node is camera-related |
+| 0x08+ | Invalid: These are Interpeted Invalid by the Game |
+
 
 ---
 
@@ -113,7 +120,7 @@ Each axis (X, Y, Z) of a joint gets its own keyframe block. The pointer table in
 |--------|----------|-------------|
 | 0x00   | uint16   | Keyframe Count |
 | 0x02   | uint16   | Keyframe Start Frame |
-| 0x04   | byte[]   | Keyframe Curve Data (Hermite splines or direct baked data) |
+| 0x04   | byte[]   | Keyframe Curve Data (KeyFrame and Hermite splines) |
 
 - The encoding format is determined by the joints Data Type (see table above).
 - Even if an axis is static or unused, it **must** be present with start/end bind pose values.
