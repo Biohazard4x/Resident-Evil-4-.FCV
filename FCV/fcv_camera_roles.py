@@ -9,9 +9,9 @@ def get_camera_role(node_id):
     roles = {
         0x00: "Camera Position",
         0x01: "Camera Target",
-        0x02: "Camera Roll",
-        0x03: "Camera Field of View",
-        0x04: "Camera Speed (?)",
+        0x02: "Camera Roll",        
+        0x03: "Camera FOV",         #Field of Vision
+        0x04: "Camera Speed (?)",   #Determines speed of camera, like curves?; unsure how it works  
         0x05: "Unknown Camera"
     }
     return roles.get(node_id, None)

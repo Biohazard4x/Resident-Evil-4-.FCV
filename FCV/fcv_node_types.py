@@ -1,10 +1,8 @@
 
 # fcv_node_types.py
-#Use this for efficient flag interpretation.
-'''
-This was made for an older version of the run_fcv script but was revised to be more mimimum.
-Im leaving this for future defintions and ussage. 
-'''
+# Node Type bitflag Interp
+
+
 
 FCV_NODE_TYPES = {
     0x01: "PC_CTRL",    # Player Controller
