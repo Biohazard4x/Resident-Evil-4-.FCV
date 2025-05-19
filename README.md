@@ -119,8 +119,10 @@ Each axis (X, Y, Z) of a joint gets its own keyframe block. The pointer table in
 | Offset | Type     | Description |
 |--------|----------|-------------|
 | 0x00   | uint16   | Keyframe Count |
-| 0x02   | uint16   | Keyframe Start Frame |
-| 0x04   | byte[]   | Keyframe Curve Data (KeyFrame and Hermite splines) |
+| 0x02+   | uint16   | Keyframe ID |
+| 0x0n   | byte[]   | Keyframe Curve Data (KeyFrame and Hermite splines) |
+
+Count Will determine how many IDs and that will determine how many sets of keyframe data will be present.
 
 - The encoding format is determined by the joints Data Type (see table above).
 - Even if an axis is static or unused, it **must** be present with start/end bind pose values.
