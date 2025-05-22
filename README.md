@@ -4,7 +4,7 @@
 **File Type**: Binary  
 **Purpose**: Defines animation for bones, camera, and player movement using keyframes and Hermite curves. No raw 3D data is stored.
 **Ports**: PS2/Ubisoft/UHD
-**Notes**: This is based for the above ports. UHD file size is big endian. The GameCube port is entirely big endian.
+**Notes**: This is based for the above ports. UHD file size is big endian. The GameCube port is entirely big endian. Some of the info here was collected from the RE4 PS2 STABs.
 
 ---
 
@@ -41,15 +41,15 @@ These define the function or transformation type of each node.
 
 | Value   | Name             | Description |
 |---------|------------------|-------------|
-| 0x01    | Player Controller (PC) | Controls player/enemy in-game movement |
-| 0x02    | Rotation (Relative)   | FK rotation |
-| 0x04    | Translation (Relative)| IK translation |
-| 0x08    | Scale (Relative)      | Local scale |
-| 0x10    | Rotation (Absolute)   | Possibly world rotation |
-| 0x20    | Translation (Absolute)| Possibly world translation |
-| 0x40    | Scale (Absolute)      | Possibly world scale |
+| 0x01    | Root Position         | Controls player/enemy in-game movement |
+| 0x02    | Bone Rotation         | FK rotation |
+| 0x04    | Translation           | IK Handle |
+| 0x08    | Scale                 | Local scale |
+| 0x10    | IK                    | IK Parent (???) |
+| 0x20    | IK Toe                | IK Parent (Feet) |
+| 0x40    | Root  Rotation        | Root Rotation |
 | 0x80    | Flip Bone             | For left/right handed bone flipping |
-| 0xA0    | Unknown               | Unkown How and what it is used for  |
+| 0xA0    | IK Arm                | IK Parent (Arms)  |
 
 According to PS2 Decomp these are not Flags
 
