@@ -5,14 +5,15 @@
 
 
 FCV_NODE_TYPES = {
-    0x01: "PC_CTRL",    # Player Controller
-    0x02: "ROT_REL",    # Rotation (Relative)
-    0x04: "TRANS_REL",  # Translation (Relative)
-    0x08: "SCALE_REL",  # Scale (Relative)
-    0x10: "ROT_ABS",    # Rotation (Absolute)
-    0x20: "TRANS_ABS",  # Translation (Absolute)
-    0x40: "SCALE_ABS",  # Scale (Absolute)
-    0x80: "FLIP_BONE"   # Flip Bone (mirroring)
+    0x01: "Root Position",   # Root Handler for position
+    0x02: "FK Rotation ",    # Rotation (Relative)
+    0x04: "IK Handle",       # Translation (Relative)
+    0x08: "Scale",           # Scale (Relative)
+    0x10: "IK Parent(?)",          # IK Parent; Need to check when and how the game uses this
+    0x20: "IK Toe Parent",          # IK Parent specifically for feet 
+    0x40: "Root Rotation",   # Root Handler but for rotation
+    0x80: "Bone Flip",        # Flip Bone (mirroring)
+    0xA0: "IK Arm Parent",           # IK Parent for Arms 
 }
 
 def get_node_type_flags(byte):

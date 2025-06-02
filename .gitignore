@@ -1,3 +1,4 @@
 *.pyc
 *.fcv
 *.log
+run_fcv.spec

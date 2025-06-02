@@ -10,7 +10,7 @@ FCV_DATA_ROLES = {
     0x04: "LEFT",           # z = 1.0
     0x05: "RIGHT",          # z = -1.0
     0x06: "CAMERA",         # Joint becomes a camera-related node
-    0x07: "CAMERA",         # Camera oriented Joint specifed in PS2 STABs
+    0x07: "CAMERA v2",      # Camera oriented Joint specifed in PS2 STABs
     0x08: "INVALID",        # Reserved? 
     0x09: "INVALID",        # Reserved? 
     0x0A: "INVALID",        # Reserved? 
