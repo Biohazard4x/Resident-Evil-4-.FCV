@@ -2,3 +2,5 @@
 *.fcv
 *.log
 run_fcv.spec
+FCV/fcv_encoding_types.py.bak
+little/test.json

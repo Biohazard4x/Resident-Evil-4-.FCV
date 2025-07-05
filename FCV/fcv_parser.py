@@ -176,34 +176,6 @@ class FCVParser:
     def align4(self, offset):
         return (offset + 3) & ~0x03
 
-    # Calculates the total size of each joint's keyframe data.
-    def get_joint_data_sizes(self):
-        joint_sizes = []
-        for i, block in enumerate(self.keyframe_blocks):
-            total_bytes = 0
-            encoding_info = block["encoding"]
-            for axis in ['X', 'Y', 'Z']:
-                axis_data = block["axis_data"][axis]
-                frame_count = len(axis_data["frames"])
-                count_bytes = 2
-                id_bytes = frame_count * 2
-                if encoding_info:
-                    per_kf_bytes = (
-                        encoding_info["value_bytes"] +
-                        encoding_info["tangent_in_bytes"] +
-                        encoding_info["tangent_out_bytes"]
-                    )
-                    kf_bytes = per_kf_bytes * frame_count
-                else:
-                    kf_bytes = 0
-                total_bytes += count_bytes + id_bytes + kf_bytes
-            joint_sizes.append({
-                "joint_index": i,
-                "node_id": self.node_ids[i],
-                "total_bytes": total_bytes
-            })
-        return joint_sizes
-
     # Returns the actual size of the file on disk.
     def get_real_file_size(self):
         with open(self.filepath, "rb") as f:
@@ -250,7 +222,7 @@ class FCVParser:
 
         self.log_print(f"\n--- Keyframe/Tangent Values ---")
         for i, block in enumerate(self.keyframe_blocks):
-            self.log_print(f"Joint: {i:02} | ID: {self.node_ids[i]} | Encoding: {enc}")
+            self.log_print(f"Joint: {i:02} | ID: {self.node_ids[i]} ")
             for axis in ['X', 'Y', 'Z']:
                 values = block["axis_data"].get(axis, {}).get("values", [])
                 self.log_print(f"  {axis} Axis:")

@@ -111,7 +111,7 @@ def decode_axis_keyframes(data: bytes, encoding_byte: int, frame_ids: list, endi
         val = struct.unpack_from(fmt, data, off)
         return val[0], off + size
 
-    def _fmt(size, endianness, signed=False):
+    def _fmt(size, endianness, signed=True):
         """
         Determines struct unpack format string based on size and endianness.
         """
@@ -143,12 +143,16 @@ def decode_axis_keyframes(data: bytes, encoding_byte: int, frame_ids: list, endi
             raw_out = raw_in  # Use shared tangent
 
         # Decode value
+        """
+        did some wild stuff here and just scrapped ALL OF IT 
+        just did this instead becasuse EzPz
+        """
         if enc['value_bytes'] == 2:
-            decoded_val = decode_rotation_uint16(raw_val, signed=True)
+            decoded_val = raw_val / 10000.0
         else:
             decoded_val = raw_val
 
-        # Decode Hermite tangents
+
         decoded_in = decode_hermite_tangent(raw_in, enc['tangent_in_bytes'])
         decoded_out = decode_hermite_tangent(
             raw_out,
@@ -164,71 +168,54 @@ def decode_axis_keyframes(data: bytes, encoding_byte: int, frame_ids: list, endi
 
     return result
 
-
-def decode_rotation_uint16(val, signed=False):
-    """
-    Decodes a uint16 rotation value back into degrees.
-    Supports both signed (-180 to +180) and unsigned (0 to 360) cases.
-    """
-    if signed:
-        return ((val / 65535.0) * 360.0) - 180.0
-    else:
-        return (val / 65535.0) * 360.0
         
 def convert_degrees_to_radians(keyframe_block):
     """
     Converts 'value' fields in a keyframe block from degrees to radians for each axis.
-    This was added for experimenting with converting camera degress to radian but was forgotten. Im leaving this here...
     """
     for axis in ['X', 'Y', 'Z']:
         for kf in keyframe_block["axis_data"][axis]["values"]:
             kf["value"] = round(math.radians(kf["value"]), 6)
+            
+def convert_radians_to_degrees(keyframe_block):
+    """
+    Converts 'value' fields in a keyframe block from radians to degrees for each axis.
+    """
 
-def decode_hermite_tangent(raw_val, byte_size, slope_range=10.0, p0=None, p1=None, steps=10):
+    for axis in ['X', 'Y', 'Z']:
+        for kf in keyframe_block["axis_data"][axis]["values"]:
+            kf["value"] = round(math.degrees(kf["value"]), 6)
+
+
+def decode_hermite_tangent(raw_val, byte_size, slope_range=0.001):
     """
     Decodes a Hermite tangent value from bytes into a float slope.
-    - 4 bytes: treated as float.
-    - 2 or 1 bytes: scaled linearly from [-slope_range, +slope_range].
-    
-    If p0 and p1 are provided, also generates Hermite spline points for debugging.
+    Adjusted for flat-start unsigned 1-byte encoding (0x00 = flat).
     """
-    # Decode the tangent
     if byte_size == 4:
-    # If already float, use as-is
         slope = raw_val if isinstance(raw_val, float) else unpack("f", pack("I", raw_val))[0]
     elif byte_size == 2:
     # Map uint16 range to slope range
-        slope = ((raw_val / 65535.0) * 2.0 * slope_range) - slope_range
+        slope = raw_val / 10000.0
     elif byte_size == 1:
-    # Map uint8 range to slope range
-        slope = ((raw_val / 255.0) * 2.0 * slope_range) - slope_range
+        slope = (raw_val / 255.0) * slope_range
+        slope = float(f"{slope:.6f}")
     else:
         slope = 0.0
 
-    # -N/A- Optionally generate Hermite spline points for debugging or visualization 
-    if p0 is not None and p1 is not None:
-        hpoints = hermite_spline_points(p0, p1, slope, slope, steps)
-        _last_hermite_debug["last_points"] = hpoints
-        _last_hermite_debug["clamped"] = is_clamped_slope(slope, slope_range)
-
     return slope
     
-def hermite_spline_points(p0, p1, t0, t1, steps=10):
+def decode_hermite_tangent_with_encoding(raw_val, byte_size, encoding_byte):
     """
-    Generates interpolated Hermite spline points between two points using tangents.
-    Used to preview or debug curve shapes.
+    Decodes with auto slope range selection based on encoding byte.
     """
-    result = []
-    for i in range(steps + 1):
-        t = i / steps
-        h00 = 2*t**3 - 3*t**2 + 1
-        h10 = t**3 - 2*t**2 + t
-        h01 = -2*t**3 + 3*t**2
-        h11 = t**3 - t**2
-        value = h00 * p0 + h10 * t0 + h01 * p1 + h11 * t1
-        result.append(value)
-    return result
+    if encoding_byte == 0x60:
+        slope_range = 0.001  # 0x00 = flat
+    else:
+        slope_range = 100000.0
+    return decode_hermite_tangent(raw_val, byte_size, slope_range)
 
+    
 def is_clamped_slope(val, slope_range=10.0, epsilon=1e-3):
     """
     Checks if a tangent value is close to the max/min slope range.
