@@ -131,7 +131,7 @@ Count Will determine how many IDs and that will determine how many sets of keyfr
 
 ## 6. Padding
 
-To maintain alignment, the header (up to pointer table) must be padded to a **32bit boundary**.  
+To maintain alignment, the header (up to pointer table) must be padded to a 4byte **32bit boundary**.  
 If the calculated size isn't aligned, zero bytes are inserted.  
 **This padding is always expected and must be present** and omitting it will break file parsing.
 
